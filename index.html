@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>妙麗歲數計算機 - 進階記憶版</title>
+    <title>妙麗歲數計算機</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fdf5e6; /* 暖米色背景 */
+            background-color: #fdf5e6;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -44,10 +44,35 @@
             font-size: 1rem;
             transition: 0.3s;
             width: 100%;
-            margin-top: 10px;
         }
         button:hover { background-color: #a0522d; transform: scale(1.02); }
         .result-area {
             margin-top: 1.5rem;
             padding-top: 1rem;
-            border-top:
+            border-top: 1px dashed #eddfd3;
+        }
+        .result-item { margin: 10px 0; color: #5d4037; }
+        .highlight { font-size: 1.5rem; font-weight: bold; color: #d2691e; }
+        .status-msg { font-size: 0.8rem; color: #8d6e63; margin-top: 10px; height: 1.2rem; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🐾 妙麗歲數計算機</h2>
+    <div class="input-group">
+        <label for="dogBirthday">選擇妙麗的生日：</label>
+        <input type="date" id="dogBirthday">
+    </div>
+    <button id="calcBtn">計算並儲存結果</button>
+
+    <div class="result-area">
+        <p class="result-item">狗狗實際年齡：<span id="dogAge" class="highlight">--</span> 歲</p>
+        <p class="result-item">換算人類年齡：<span id="humanAge" class="highlight">--</span> 歲</p>
+    </div>
+    <div id="status" class="status-msg"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
