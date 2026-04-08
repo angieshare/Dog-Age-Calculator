@@ -1,40 +1,62 @@
 const calcBtn = document.getElementById('calcBtn');
+const birthdayInput = document.getElementById('dogBirthday');
+const dogAgeDisplay = document.getElementById('dogAge');
+const humanAgeDisplay = document.getElementById('humanAge');
+const statusMsg = document.getElementById('status');
 
+const STORAGE_KEY = 'hermione_birthday_data';
+
+// --- 1. 初始化：檢查瀏覽器有沒有存過資料 ---
+window.onload = function() {
+    const savedDate = localStorage.getItem(STORAGE_KEY);
+    if (savedDate) {
+        birthdayInput.value = savedDate;
+        calculateAndDisplay(savedDate);
+        statusMsg.textContent = "已自動載入上次儲存的生日 ✨";
+    }
+};
+
+// --- 2. 點擊按鈕：計算並存檔 ---
 calcBtn.addEventListener('click', function() {
-    const birthdayValue = document.getElementById('dogBirthday').value;
+    const birthdayValue = birthdayInput.value;
+    
     if (!birthdayValue) {
-        alert("請先選擇日期喔！");
+        alert("請先選擇妙麗的生日喔！");
         return;
     }
 
-    const birthday = new Date(birthdayValue);
+    // 儲存到 localStorage
+    localStorage.setItem(STORAGE_KEY, birthdayValue);
+    
+    // 執行計算
+    calculateAndDisplay(birthdayValue);
+    statusMsg.textContent = "計算完成，已更新紀錄！ ✅";
+});
+
+// --- 3. 核心計算函式 ---
+function calculateAndDisplay(birthdayStr) {
+    const birthday = new Date(birthdayStr);
     const today = new Date();
     
-    // 1. 計算狗狗實際歲數 (考慮月份與日期)
+    // 計算實際歲數
     let age = today.getFullYear() - birthday.getFullYear();
     const monthDiff = today.getMonth() - birthday.getMonth();
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
         age--;
     }
-
-    // 防止年齡出現負數（如果選了未來的日期）
     age = age < 0 ? 0 : age;
 
-    // 2. 換算人類年齡邏輯 (中小型犬公式)
-    // 第一年 = 15 歲
-    // 第二年 = +9 歲 (共 24 歲)
-    // 之後每年 = +4 歲
+    // 換算人類歲數邏輯 (15, 9, 4)
     let humanAge = 0;
     if (age === 1) {
         humanAge = 15;
     } else if (age >= 2) {
         humanAge = 24 + (age - 2) * 4;
-    } else if (age < 1) {
-        // 未滿一歲的簡化算法：若想更精確可依月份計算，這裡先以 0 歲計
-        humanAge = age * 15; 
+    } else {
+        humanAge = age * 15;
     }
 
-    // 3. 將結果渲染到網頁上
-    document.getElementById('dogAge').textContent = age;
-    document.getElementById('humanAge').textContent = Math.floor(humanAge);
-});
+    // 顯示到網頁上
+    dogAgeDisplay.textContent = age;
+    humanAgeDisplay.textContent = Math.floor(humanAge);
+}
